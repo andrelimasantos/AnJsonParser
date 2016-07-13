@@ -97,7 +97,7 @@ public class JSONParser {
 		return jsonArray;
 	}
 	
-	public Object parse(byte[] json, Class<?> clazz) throws JSONParserFailureException{
+	public <T>T parse(byte[] json, Class<T> clazz) throws JSONParserFailureException{
 		try {
 			return parse(new JSONObject(new String(json)), clazz);
 		} catch (JSONException e) {
@@ -105,10 +105,10 @@ public class JSONParser {
 		}
 	}
 	
-	public Object parse(JSONObject json, Class<?> clazz) throws JSONParserFailureException{
+	public <T>T parse(JSONObject json, Class<T> clazz) throws JSONParserFailureException{
 		if(clazz.isAnnotationPresent(JSONType.class) && json != null){
 			try{
-				Object object = clazz.newInstance();
+				T object = clazz.newInstance();
 				List<Field> fields = new LinkedList<Field>();
 				
 				Class<?> c = clazz;
