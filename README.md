@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/andrelimasantos/AnJsonParser.svg?branch=master)](https://travis-ci.org/andrelimasantos/AnJsonParser)
+
 # AnJsonParser
 Annotated Java JSON parser 
 
