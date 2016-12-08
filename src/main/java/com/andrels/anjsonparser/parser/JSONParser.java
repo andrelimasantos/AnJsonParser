@@ -21,10 +21,24 @@ import com.andrels.anjsonparser.annotation.JSONAttribute;
 import com.andrels.anjsonparser.annotation.JSONType;
 import com.andrels.anjsonparser.exception.JSONParserFailureException;
 
+/**
+ * 
+ * @author Andre L. Santos <andrelimasantos@gmail.com>
+ * @since 8 de dez de 2016
+ * 
+ * Parser to/from JSON
+ */
 public class JSONParser {
 	private static final String DATE_TIME_FORMAT = "yyyy-MM-dd'T'HH:mm:ss";
 	private static final SimpleDateFormat sdf = new SimpleDateFormat(DATE_TIME_FORMAT, Locale.getDefault());
 	
+	/**
+	 * Serialize a java.lang.Object annoted with @JSONType
+	 * into JSON
+	 * @param object
+	 * @return JSONObject
+	 * @see org.json.JSONObject, com.andrels.anjsonparser.annotation.JSONType
+	 */
 	public JSONObject serialize(Object object){
 		Class<?> clazz = object.getClass();
 		JSONObject json = null;
@@ -87,6 +101,13 @@ public class JSONParser {
 		return json;
 	}
 	
+	/**
+     * Serialize a java.util.Collection
+     * into JSON array
+     * @param objects
+     * @return JSONObject
+     * @see org.json.JSONArray
+     */
 	public JSONArray serialize(Collection<?> collection){
 		JSONArray jsonArray = new JSONArray();
 		for(Object object : collection){
@@ -97,13 +118,23 @@ public class JSONParser {
 		return jsonArray;
 	}
 	
-	public <T>T parse(byte[] json, Class<T> clazz) throws JSONParserFailureException{
+	/**
+	 * Parse JSON String into typed <T> Object, since annoted with JSONType  
+	 * @param json
+	 * @param clazz
+	 * @return
+	 * @throws JSONParserFailureException
+	 * 
+	 * @see com.andrels.anjsonparser.annotation.JSONType
+	 */
+	public <T>T parse(String json, Class<T> clazz) throws JSONParserFailureException{
 		try {
-			return parse(new JSONObject(new String(json)), clazz);
+			return parse(new JSONObject(json), clazz);
 		} catch (JSONException e) {
 			throw new JSONParserFailureException(e.getMessage(), e);
 		}
 	}
+	
 	
 	public <T>T parse(JSONObject json, Class<T> clazz) throws JSONParserFailureException{
 		if(clazz.isAnnotationPresent(JSONType.class) && json != null){
